@@ -59,11 +59,11 @@ private:
     bool isStarted = true;
     bool isDrawFinished = true;
 
-    static constexpr int nSparks = 200;
+    static constexpr int nSparks = 500;
     static constexpr int size = 1;
-    static constexpr float SpawnTime = 4.0f;
-    static constexpr float maxSpeed = 40.0f;
-    static constexpr float duration = 3.0f;
+    static constexpr float SpawnTime = 3.0f;
+    static constexpr float maxSpeed = 60.0f;
+    static constexpr float duration = 2.0f;
 
     Fireworks sparks[nSparks];
 	/********************************/

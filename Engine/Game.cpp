@@ -62,6 +62,11 @@ void Game::UpdateModel()
             vx = speed;
             speed = rng::rdm_float(-maxSpeed, maxSpeed);
             vy = speed;
+            while (vx * vx + vy * vy > maxSpeed * maxSpeed / 2)
+            {
+                vx = vx * 0.7f;
+                vy = vy * 0.7f;
+            }
             cSpectrum = rng::rdm_int(0, 7);
             if (cSpectrum == 0) { c = Colors::Blue; }
             if (cSpectrum == 1) { c = Colors::Cyan; }
