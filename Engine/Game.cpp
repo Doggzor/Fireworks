@@ -28,7 +28,7 @@ Game::Game( MainWindow& wnd )
 {
     for (int i = 0; i < nSparks; ++i)
     {
-        sparks[i].init(x, y, vx, vy, c);
+        sparks[i].init(x, y, vx, vy, size, c);
     }
 }
 
@@ -71,7 +71,7 @@ void Game::UpdateModel()
             if (cSpectrum == 5) { c = Colors::Red; }
             if (cSpectrum == 6) { c = Colors::White; }
             if (cSpectrum == 7) { c = Colors::Yellow; }
-            sparks[i].init(x, y, vx, vy, c);
+            sparks[i].init(x, y, vx, vy, size, c);
         }
         SpawnTimer = 0.0f;
         durTimer = 0.0f;
