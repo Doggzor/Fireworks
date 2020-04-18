@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Numbers.h"
 #include "FrameTimer.h"
+#include "Fireworks.h"
 
 class Game
 {
@@ -45,5 +46,7 @@ private:
 	/********************************/
 	/*  User Variables              */
     FrameTimer ft;
+    static constexpr int nSparks = 100;
+    Fireworks sparks[nSparks];
 	/********************************/
 };
