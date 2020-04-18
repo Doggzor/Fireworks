@@ -1,14 +1,17 @@
 #include "Fireworks.h"
 
-void Fireworks::Draw(float x, float y, Graphics& gfx) const
+void Fireworks::Draw(Graphics& gfx) const
 {
-	gfx.PutPixel(x, y, c);
+	int int_x = (int)x;
+	int int_y = (int)y;
+	if(int_x >= 0 && int_x < gfx.ScreenWidth && int_y >=0 && int_y < gfx.ScreenHeight)
+	gfx.PutPixel(int_x, int_y, c);
 }
 
-void Fireworks::Update()
+void Fireworks::Update(float dt)
 {
-	x += vx;
-	y += vy;
+	x += vx * dt;
+	y += vy * dt;
 }
 
 void Fireworks::init(float in_x, float in_y, float in_vx, float in_vy, Color in_c)
@@ -18,6 +21,5 @@ void Fireworks::init(float in_x, float in_y, float in_vx, float in_vy, Color in_
 	vx = in_vx;
 	vy = in_vy;
 	c = in_c;
-
 }
 

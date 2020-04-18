@@ -26,6 +26,10 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+    for (int i = 0; i < nSparks; ++i)
+    {
+        sparks[i].init(x, y, vx, vy, c);
+    }
 }
 
 void Game::Go()
@@ -39,8 +43,54 @@ void Game::Go()
 void Game::UpdateModel()
 {
     const float dt = ft.Mark();
+
+    if (isStarted)
+    {
+        SpawnTimer = SpawnTime + duration;
+        isStarted = false;
+    }
+
+    SpawnTimer += dt;
+    durTimer += dt;
+    if (SpawnTimer >= SpawnTime)
+    {
+        x = rng::rdm_float(50.0f, 750.0f);
+        y = rng::rdm_float(50.0f, 550.0f);
+        for (int i = 0; i < nSparks; ++i)
+        {
+            speed = rng::rdm_float(-maxSpeed, maxSpeed);
+            vx = speed;
+            speed = rng::rdm_float(-maxSpeed, maxSpeed);
+            vy = speed;
+            cSpectrum = rng::rdm_int(0, 7);
+            if (cSpectrum == 0) { c = Colors::Blue; }
+            if (cSpectrum == 1) { c = Colors::Cyan; }
+            if (cSpectrum == 2) { c = Colors::Green; }
+            if (cSpectrum == 3) { c = Colors::Magenta; }
+            if (cSpectrum == 4) { c = Colors::Orange; }
+            if (cSpectrum == 5) { c = Colors::Red; }
+            if (cSpectrum == 6) { c = Colors::White; }
+            if (cSpectrum == 7) { c = Colors::Yellow; }
+            sparks[i].init(x, y, vx, vy, c);
+        }
+        SpawnTimer = 0.0f;
+        durTimer = 0.0f;
+    }
+    isDrawFinished = (durTimer >= duration);
+
+    for (int i = 0; i < nSparks; ++i)
+    {
+        sparks[i].Update(dt);
+    }
 }
 
 void Game::ComposeFrame()
 {
+    if (!isDrawFinished)
+    {
+        for (int i = 0; i < nSparks; ++i)
+        {
+            sparks[i].Draw(gfx);
+        }
+    }
 }

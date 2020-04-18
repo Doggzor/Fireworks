@@ -26,6 +26,7 @@
 #include "Numbers.h"
 #include "FrameTimer.h"
 #include "Fireworks.h"
+#include "rng.h"
 
 class Game
 {
@@ -46,7 +47,22 @@ private:
 	/********************************/
 	/*  User Variables              */
     FrameTimer ft;
-    static constexpr int nSparks = 100;
+    int cSpectrum = 0;
+    Color c = Colors::Black;
+    float x = 0.0f;
+    float y = 0.0f;
+    float vx = 0.0f;
+    float vy = 0.0f;
+    float SpawnTimer = 0.0f;
+    float speed = 0.0f;
+    float durTimer = 0.0f;
+    bool isStarted = true;
+    bool isDrawFinished = true;
+
+    static constexpr int nSparks = 200;
+    static constexpr float SpawnTime = 4.0f;
+    static constexpr float maxSpeed = 40.0f;
+    static constexpr float duration = 3.0f;
     Fireworks sparks[nSparks];
 	/********************************/
 };
