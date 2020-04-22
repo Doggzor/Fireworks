@@ -55,16 +55,25 @@ private:
     float vy = 0.0f;
     float SpawnTimer = 0.0f;
     float speed = 0.0f;
-    float durTimer = 0.0f;
+    float durTimer0 = 0.0f;
+    float durTimer1 = 0.0f;
+    float durTimer2 = 0.0f;
     bool isStarted = true;
-    bool isDrawFinished = true;
+    bool isDrawFinished0 = true;
+    bool isDrawFinished1 = true;
+    bool isDrawFinished2 = true;
+    int wave = 0;
 
-    static constexpr int nSparks = 500;
-    static constexpr int size = 1;
-    static constexpr float SpawnTime = 3.0f;
-    static constexpr float maxSpeed = 60.0f;
-    static constexpr float duration = 2.0f;
+    /***Modifiable values of fireworks******        ****************************/
+    static constexpr int nSparks = 500;             //Number of sparks
+    static constexpr int size = 1;                  //Size of sparks
+    static constexpr float SpawnTime = 5.5f;        //Time between 2 fireworks
+    static constexpr float maxSpeed = 60.0f;        //Speed of sparks
+    static constexpr float duration = 3.5f;         //How long the sparks last
+    /***************************************        ****************************/
 
-    Fireworks sparks[nSparks];
+    Fireworks sparks0[nSparks];
+    Fireworks sparks1[nSparks];
+    Fireworks sparks2[nSparks];
 	/********************************/
 };

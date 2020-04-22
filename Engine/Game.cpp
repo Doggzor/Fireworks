@@ -28,7 +28,15 @@ Game::Game( MainWindow& wnd )
 {
     for (int i = 0; i < nSparks; ++i)
     {
-        sparks[i].init(x, y, vx, vy, size, c);
+        sparks0[i].init(x, y, vx, vy, size, c);
+    }
+    for (int i = 0; i < nSparks; ++i)
+    {
+        sparks1[i].init(x, y, vx, vy, size, c);
+    }
+    for (int i = 0; i < nSparks; ++i)
+    {
+        sparks2[i].init(x, y, vx, vy, size, c);
     }
 }
 
@@ -51,8 +59,12 @@ void Game::UpdateModel()
     }
 
     SpawnTimer += dt;
-    durTimer += dt;
-    if (SpawnTimer >= SpawnTime)
+    durTimer0 += dt;
+    durTimer1 += dt;
+    durTimer2 += dt;
+
+    //Summon 1st wave
+    if (SpawnTimer >= SpawnTime && wave == 0)
     {
         x = rng::rdm_float(50.0f, 750.0f);
         y = rng::rdm_float(50.0f, 550.0f);
@@ -64,8 +76,8 @@ void Game::UpdateModel()
             vy = speed;
             while (vx * vx + vy * vy > maxSpeed * maxSpeed / 2)
             {
-                vx = vx * 0.7f;
-                vy = vy * 0.7f;
+                vx = vx * 0.5f;
+                vy = vy * 0.5f;
             }
             cSpectrum = rng::rdm_int(0, 7);
             if (cSpectrum == 0) { c = Colors::Blue; }
@@ -76,26 +88,114 @@ void Game::UpdateModel()
             if (cSpectrum == 5) { c = Colors::Red; }
             if (cSpectrum == 6) { c = Colors::White; }
             if (cSpectrum == 7) { c = Colors::Yellow; }
-            sparks[i].init(x, y, vx, vy, size, c);
+            sparks0[i].init(x, y, vx, vy, size, c);
         }
+        ++wave;
         SpawnTimer = 0.0f;
-        durTimer = 0.0f;
+        durTimer0 = 0.0f;
     }
-    isDrawFinished = (durTimer >= duration);
+    isDrawFinished0 = (durTimer0 >= duration);
+    
+    //Summon 2nd wave
+    if (SpawnTimer >= 0.3f && wave == 1)
+    {
+        for (int i = 0; i < nSparks; ++i)
+        {
+            speed = rng::rdm_float(-maxSpeed, maxSpeed);
+            vx = speed;
+            speed = rng::rdm_float(-maxSpeed, maxSpeed);
+            vy = speed;
+            while (vx * vx + vy * vy > maxSpeed * maxSpeed / 2)
+            {
+                vx = vx * 0.5f;
+                vy = vy * 0.5f;
+            }
+            cSpectrum = rng::rdm_int(0, 7);
+            if (cSpectrum == 0) { c = Colors::Blue; }
+            if (cSpectrum == 1) { c = Colors::Cyan; }
+            if (cSpectrum == 2) { c = Colors::Green; }
+            if (cSpectrum == 3) { c = Colors::Magenta; }
+            if (cSpectrum == 4) { c = Colors::Orange; }
+            if (cSpectrum == 5) { c = Colors::Red; }
+            if (cSpectrum == 6) { c = Colors::White; }
+            if (cSpectrum == 7) { c = Colors::Yellow; }
+            sparks1[i].init(x, y, vx, vy, size, c);
+        }
+        ++wave;
+        SpawnTimer = 0.0f;
+        durTimer1 = 0.0f;
+    }
+    isDrawFinished1 = (durTimer1 >= duration - 0.37f);
 
+    //Summon 3rd wave
+    if (SpawnTimer >= 0.3f && wave == 2)
+    {
+        for (int i = 0; i < nSparks; ++i)
+        {
+            speed = rng::rdm_float(-maxSpeed, maxSpeed);
+            vx = speed;
+            speed = rng::rdm_float(-maxSpeed, maxSpeed);
+            vy = speed;
+            while (vx * vx + vy * vy > maxSpeed * maxSpeed / 2)
+            {
+                vx = vx * 0.5f;
+                vy = vy * 0.5f;
+            }
+            cSpectrum = rng::rdm_int(0, 7);
+            if (cSpectrum == 0) { c = Colors::Blue; }
+            if (cSpectrum == 1) { c = Colors::Cyan; }
+            if (cSpectrum == 2) { c = Colors::Green; }
+            if (cSpectrum == 3) { c = Colors::Magenta; }
+            if (cSpectrum == 4) { c = Colors::Orange; }
+            if (cSpectrum == 5) { c = Colors::Red; }
+            if (cSpectrum == 6) { c = Colors::White; }
+            if (cSpectrum == 7) { c = Colors::Yellow; }
+            sparks2[i].init(x, y, vx, vy, size, c);
+        }
+        ++wave;
+        SpawnTimer = 0.0f;
+        durTimer2 = 0.0f;
+    }
+    isDrawFinished2 = (durTimer2 >= duration - 0.74f);
+
+    if (wave > 2) { wave = 0; } //Reset waves
+
+    //Movement of sparks
     for (int i = 0; i < nSparks; ++i)
     {
-        sparks[i].Update(dt);
+        sparks0[i].Update(dt);
+    }
+    for (int i = 0; i < nSparks; ++i)
+    {
+        sparks1[i].Update(dt);
+    }
+    for (int i = 0; i < nSparks; ++i)
+    {
+        sparks2[i].Update(dt);
     }
 }
 
 void Game::ComposeFrame()
 {
-    if (!isDrawFinished)
+    if (!isDrawFinished0)
     {
         for (int i = 0; i < nSparks; ++i)
         {
-            sparks[i].Draw(gfx);
+            sparks0[i].Draw(gfx);
+        }
+    }
+    if (!isDrawFinished1)
+    {
+        for (int i = 0; i < nSparks; ++i)
+        {
+            sparks1[i].Draw(gfx);
+        }
+    }
+    if (!isDrawFinished2)
+    {
+        for (int i = 0; i < nSparks; ++i)
+        {
+            sparks2[i].Draw(gfx);
         }
     }
 }
