@@ -40,6 +40,28 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+    void SpawnWave(float& durTimer, int Wave, Fireworks* sparks)
+    {
+        if (SpawnTimer >= SpawnTime * !wave + (bool)wave * 0.3f && wave == Wave) {
+            for (int i = 0; i < nSparks; ++i)
+            {
+                speed = rng::rdm_float(-maxSpeed, maxSpeed);
+                vx = speed;
+                speed = rng::rdm_float(-maxSpeed, maxSpeed);
+                vy = speed;
+                while (vx * vx + vy * vy > maxSpeed * maxSpeed / 2)
+                {
+                    vx = vx * 0.5f;
+                    vy = vy * 0.5f;
+                }
+                c = rng::rdm_color8();
+                sparks[i].init(x, y, vx, vy, size, c);
+            }
+            ++wave;
+            SpawnTimer = 0.0f;
+            durTimer = 0.0f;
+        }
+    }
 	/********************************/
 private:
 	MainWindow& wnd;
