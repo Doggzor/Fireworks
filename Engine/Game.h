@@ -40,6 +40,28 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+    void SpawnWave(float& durTimer, int Wave, Fireworks* sparks)
+    {
+        if (SpawnTimer >= SpawnTime * !wave + (bool)wave * 0.3f && wave == Wave) {
+            for (int i = 0; i < nSparks; ++i)
+            {
+                speed = rng::rdm_float(-maxSpeed, maxSpeed);
+                vx = speed;
+                speed = rng::rdm_float(-maxSpeed, maxSpeed);
+                vy = speed;
+                while (vx * vx + vy * vy > maxSpeed * maxSpeed / 2)
+                {
+                    vx = vx * 0.5f;
+                    vy = vy * 0.5f;
+                }
+                c = rng::rdm_color8();
+                sparks[i].init(x, y, vx, vy, size, c);
+            }
+            ++wave;
+            SpawnTimer = 0.0f;
+            durTimer = 0.0f;
+        }
+    }
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -55,16 +77,25 @@ private:
     float vy = 0.0f;
     float SpawnTimer = 0.0f;
     float speed = 0.0f;
-    float durTimer = 0.0f;
+    float durTimer0 = 0.0f;
+    float durTimer1 = 0.0f;
+    float durTimer2 = 0.0f;
     bool isStarted = true;
-    bool isDrawFinished = true;
+    bool isDrawFinished0 = true;
+    bool isDrawFinished1 = true;
+    bool isDrawFinished2 = true;
+    int wave = 0;
 
-    static constexpr int nSparks = 200;
-    static constexpr int size = 1;
-    static constexpr float SpawnTime = 4.0f;
-    static constexpr float maxSpeed = 40.0f;
-    static constexpr float duration = 3.0f;
+    /***Modifiable values of fireworks******        ****************************/
+    static constexpr int nSparks = 500;             //Number of sparks
+    static constexpr int size = 1;                  //Size of sparks
+    static constexpr float SpawnTime = 5.5f;        //Time between 2 fireworks
+    static constexpr float maxSpeed = 60.0f;        //Speed of sparks
+    static constexpr float duration = 3.5f;         //How long the sparks last
+    /***************************************        ****************************/
 
-    Fireworks sparks[nSparks];
+    Fireworks sparks0[nSparks];
+    Fireworks sparks1[nSparks];
+    Fireworks sparks2[nSparks];
 	/********************************/
 };
